@@ -1,29 +1,32 @@
 package com.example.core;
 
 public class Car {
-	
+
 	private String regNumber;
 	private String color;
-	
+
 	public Car(String regNumber, String color) {
 		super();
 		this.regNumber = regNumber;
 		this.color = color;
 	}
-	
+
 	public String getCarRegNumber() {
 		return regNumber;
 	}
+
 	public void setCarRegNumber(String carRegNumber) {
 		this.regNumber = carRegNumber;
 	}
+
 	public String getCarColor() {
 		return color;
 	}
+
 	public void setCarColor(String carColor) {
 		this.color = carColor;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -32,6 +35,7 @@ public class Car {
 				+ ((regNumber == null) ? 0 : regNumber.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -48,10 +52,10 @@ public class Car {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
-		return regNumber + "	" + color +"\n";
+		return regNumber + "	" + color + "\n";
 	}
 
-	
 }
