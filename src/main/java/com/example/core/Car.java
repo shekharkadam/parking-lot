@@ -55,7 +55,7 @@ public class Car {
 
 	@Override
 	public String toString() {
-		return regNumber + "	" + color + "\n";
+		return regNumber + "		" + color + "\n";
 	}
 
 }

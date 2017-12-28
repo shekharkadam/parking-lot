@@ -1,6 +1,8 @@
 package com.example.parkinglot;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
@@ -15,37 +17,58 @@ import com.example.util.ParkingUtility;
  * @author go-jek This is main file for Parking lot Application
  */
 public class ParkingLotApplication {
-
+	
 	public static void main(String[] args) {
-		// SpringApplication.run(ParkingLotApplication.class, args);
+		
+		ParkingLotApplication parkAppl = new ParkingLotApplication();
 
-		// 1. Initialize parking floor variable
+		// 1.1 Initialize parking floor variable
 		Map<Integer, Car> parkingFloor = new Hashtable<Integer, Car>();
+		
+		//1.2 Initialise ParkingUtility
+		ParkingUtility parkingUtility = new ParkingUtility();
 
-		// 2. Initialize string buffer for standard user input
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		// 2.0 read file name string
+		String fileName = "";
+		for(String flName:args){
+			fileName = UtilityConstant.INPUT_FILE_PATH+flName;
+		}
+		
+		// 3 create Buffered Reader
+		BufferedReader br = parkAppl.createReadBuffer(fileName);
+		
 
-		// 3. Initialize command variable
+		// 4. Initialize command variable
 		String commandLine = "";
 
-		// 4. User input reading logic
-		while (!commandLine.equalsIgnoreCase(UtilityConstant.PROGRAM_EXIT)) {
+		if(fileName.length()==0)
 			System.out.print(UtilityConstant.ASK_FOR_INPUT_MSG);
-			//
-			try {
-				commandLine = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
+		
+		// 5. User input reading logic
+		 try {
+			while ( (commandLine = br.readLine() )!=null ) {
+				
+				// 4.1 process the command
+				parkAppl.processCommand(commandLine, parkingFloor, parkingUtility);
+				
+				if(fileName.length()==0)
+					System.out.print(UtilityConstant.ASK_FOR_INPUT_MSG);
 			}
-			// 4.1 process the command
-			processCommand(commandLine, parkingFloor);
-
+			
+			// 6. close buffered reader 
+			br.close();
+			
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			
 		} // End of while : User input reading logic
-
+		
 	} // End of main : ParkingLotApplication
 
-	public static void processCommand(String commandLine,
-			Map<Integer, Car> parkingFloor) {
+	
+	
+	public void processCommand(String commandLine,
+			Map<Integer, Car> parkingFloor, ParkingUtility parkingUtility) {
 		// Split commandLine for command and argument list
 		String commandArray[] = commandLine.split(" ");
 		String command = "";
@@ -62,21 +85,45 @@ public class ParkingLotApplication {
 
 		Car car = new Car(arg1, arg2);
 		if (command.equalsIgnoreCase(UtilityConstant.PARK_COMMAND))
-			ParkingUtility.park(parkingFloor, car);
+			parkingUtility.park(parkingFloor, car);
 		if (command.equalsIgnoreCase(UtilityConstant.LEAVE_COMMAND))
-			ParkingUtility.leave(parkingFloor, arg1);
+			parkingUtility.leave(parkingFloor, arg1);
 		if (command.equalsIgnoreCase(UtilityConstant.STATUS))
-			ParkingUtility.status(parkingFloor);
+			parkingUtility.status(parkingFloor);
 		if (command.equalsIgnoreCase(UtilityConstant.CREATE_PARKING_LOT_CMD))
-			ParkingUtility.createParkingLot(Integer.parseInt(arg1));
+			parkingUtility.createParkingLot(Integer.parseInt(arg1));
 		if (command
 				.equalsIgnoreCase(UtilityConstant.SLOT_NUMBER_FOR_REGISTRATION_NUMBER_CMD))
-			ParkingUtility.findSlotByRegistrationNum(parkingFloor, car);
+			parkingUtility.findSlotByRegistrationNum(parkingFloor, car);
 		if (command.equalsIgnoreCase(UtilityConstant.SLOTNUM_CMD)
 				|| command.equalsIgnoreCase(UtilityConstant.REGNUM_CMD))
-			ParkingUtility.findSlotsRegNumByColor(parkingFloor, arg1, command);
+			parkingUtility.findSlotsRegNumByColor(parkingFloor, arg1, command);
 
 	}// End of function : processCommand
+	
+	public BufferedReader createReadBuffer(String fileName) {
+		
+		BufferedReader br = null;		
+		// 2.0.1 read text file
+		FileReader fileReader = null;
+		
+		if (fileName.length() > 0) {
+
+			try {
+				fileReader = new FileReader(fileName);
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			// 2.0.2 read text file- FileReader in BufferedReader.
+			return new BufferedReader(fileReader);
+
+		} else {
+			// 2.0.2 Initialize string buffer for standard user input
+			return new BufferedReader(new InputStreamReader(System.in));
+
+		}
+
+	}
 
 } // End of class : ParkingLotApplication
 

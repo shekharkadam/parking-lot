@@ -15,11 +15,13 @@ import com.example.core.Car;
  */
 public class ParkingUtility {
 
-	private static int lotSize;
+	private int lotSize;
 
-	public static void park(Map<Integer, Car> parkingFloor, Car car) {
+	public void park(Map<Integer, Car> parkingFloor, Car car) {
+		
 		int slotNumber = generateSlotNumber(parkingFloor);
 		if (slotNumber != 0) {
+			
 			parkingFloor.put(slotNumber, car);
 			System.out.format(UtilityConstant.ALLOCATED_SLOT_NUM_MSG,
 					String.valueOf(slotNumber));
@@ -27,28 +29,36 @@ public class ParkingUtility {
 
 	}
 
-	public static void leave(Map<Integer, Car> parkingFloor, String slotNumber) {
+	public void leave(Map<Integer, Car> parkingFloor, String slotNumber) {
+		
 		parkingFloor.remove(Integer.parseInt(slotNumber));
 		System.out.format(UtilityConstant.FREE_SLOT_NUM_MSG, slotNumber);
 
 	}
 
-	public static void status(Map<Integer, Car> parkingFloor) {
+	public void status(Map<Integer, Car> parkingFloor) {
+		
 		Set<Integer> keySet = parkingFloor.keySet();
+		System.out.println(UtilityConstant.STATUS_HEADING);
+		
 		for (int slot : keySet)
-			System.out.println(UtilityConstant.PARK_COMMAND + "	"
+			System.out.println(UtilityConstant.PARK_COMMAND + "		"
 					+ parkingFloor.get(slot));
 	}
 
-	public static void createParkingLot(int size) {
+	public void createParkingLot(int size) {
+		
 		lotSize = size;
 		System.out.format(UtilityConstant.CREATED_PARKING_SLOT_MSG, lotSize);
 	}
 
-	private static int generateSlotNumber(Map<Integer, Car> parkingFloor) {
+	private int generateSlotNumber(Map<Integer, Car> parkingFloor) {
+		
 		Set<Integer> slotSet = parkingFloor.keySet();
 		int slotNumber = 0;
+		
 		if (parkingFloor.size() < lotSize) {
+			
 			int tempSlotNum = 0;
 			while (tempSlotNum < lotSize) {
 				tempSlotNum = tempSlotNum + 1;
@@ -57,14 +67,19 @@ public class ParkingUtility {
 					break;
 				}
 			}
+			
+		} else if (lotSize == 0) {
+			System.out
+					.println(UtilityConstant.PLEASE_INITIALIZE_PARKING_LOT_MSG);
 		} else {
+			
 			System.out.println(UtilityConstant.PARKING_LOT_FULL_MSG);
 		}
 
 		return slotNumber;
 	}
 
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		createParkingLot(6);
 
 		Map<Integer, Car> parkingFloor = new Hashtable<Integer, Car>();
@@ -89,7 +104,7 @@ public class ParkingUtility {
 
 	}
 
-	public static void findSlotsRegNumByColor(Map<Integer, Car> parkingFloor,
+	public void findSlotsRegNumByColor(Map<Integer, Car> parkingFloor,
 			String color, String requirment) {
 		Set<String> requiredSet = new HashSet<String>();
 		Set<Integer> keySet = parkingFloor.keySet();
@@ -108,8 +123,8 @@ public class ParkingUtility {
 			System.out.println(requiredSet);
 	}
 
-	public static void findSlotByRegistrationNum(
-			Map<Integer, Car> parkingFloor, Car carToSearch) {
+	public void findSlotByRegistrationNum(Map<Integer, Car> parkingFloor,
+			Car carToSearch) {
 		boolean carPresent = parkingFloor.containsValue(carToSearch);
 
 		if (carPresent) {
