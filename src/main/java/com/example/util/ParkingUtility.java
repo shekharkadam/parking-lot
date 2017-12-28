@@ -9,14 +9,20 @@ import com.example.constant.UtilityConstant;
 import com.example.core.Car;
 
 /**
+ * This is business utility class, parking operational business logic implemented 
  * 
- * @author go-jek This is business utility file
+ * @author go-jek 
  * 
  */
 public class ParkingUtility {
 
 	private int lotSize;
 
+	/**
+	 * This method used to park new car
+	 * @param parkingFloor
+	 * @param car
+	 */
 	public void park(Map<Integer, Car> parkingFloor, Car car) {
 		
 		int slotNumber = generateSlotNumber(parkingFloor);
@@ -29,13 +35,28 @@ public class ParkingUtility {
 
 	}
 
+	/**
+	 * This is method for remove your car while leaving
+	 * 
+	 * @param parkingFloor
+	 * @param slotNumber
+	 */
 	public void leave(Map<Integer, Car> parkingFloor, String slotNumber) {
 		
-		parkingFloor.remove(Integer.parseInt(slotNumber));
-		System.out.format(UtilityConstant.FREE_SLOT_NUM_MSG, slotNumber);
+		if (Integer.parseInt(slotNumber) <= lotSize) {
+			parkingFloor.remove(Integer.parseInt(slotNumber));
+			System.out.format(UtilityConstant.FREE_SLOT_NUM_MSG, slotNumber);
+		}else{
+			System.out.format(UtilityConstant.BEYOND_LOT_SIZE_MSG, slotNumber, lotSize);
+		}
 
 	}
 
+	/**
+	 * This method shows current status of parking lot in tabular format
+	 * 
+	 * @param parkingFloor
+	 */
 	public void status(Map<Integer, Car> parkingFloor) {
 		
 		Set<Integer> keySet = parkingFloor.keySet();
@@ -46,12 +67,23 @@ public class ParkingUtility {
 					+ parkingFloor.get(slot));
 	}
 
+	/**
+	 * This method create parking lot of given size
+	 * 
+	 * @param size
+	 */
 	public void createParkingLot(int size) {
 		
 		lotSize = size;
 		System.out.format(UtilityConstant.CREATED_PARKING_SLOT_MSG, lotSize);
 	}
 
+	/**
+	 * This method assign free slot number for new car
+	 * 
+	 * @param parkingFloor
+	 * @return
+	 */
 	private int generateSlotNumber(Map<Integer, Car> parkingFloor) {
 		
 		Set<Integer> slotSet = parkingFloor.keySet();
@@ -79,31 +111,14 @@ public class ParkingUtility {
 		return slotNumber;
 	}
 
-	public void main(String[] args) {
-		createParkingLot(6);
-
-		Map<Integer, Car> parkingFloor = new Hashtable<Integer, Car>();
-
-		park(parkingFloor, new Car("KA-01-HH-1234", "White"));
-		park(parkingFloor, new Car("KA-01-HH-9999", "White"));
-		park(parkingFloor, new Car("KA-01-BB-0001", "Black"));
-		park(parkingFloor, new Car("KA-01-HH-7777", "Red"));
-		park(parkingFloor, new Car("KA-01-HH-2701", "Blue"));
-		park(parkingFloor, new Car("KA-01-HH-3141", "Black"));
-
-		// park(parkingFloor, new Car("test-num", "Silver"));
-		// leave(parkingFloor, "4");
-		status(parkingFloor);
-
-		// slot_number_for_registration_number KA-01-HH-3141
-		Car carToSearch = new Car("KA-01-HH-9999", "");
-		String color = "red";
-		findSlotByRegistrationNum(parkingFloor, carToSearch);
-		findSlotsRegNumByColor(parkingFloor, color, UtilityConstant.SLOTNUM_CMD);
-		findSlotsRegNumByColor(parkingFloor, color, UtilityConstant.REGNUM_CMD);
-
-	}
-
+	/**
+	 * This method finds car registration or slot number number by given color
+	 * the requirement param distinguishes  for slot or registration number
+	 * 
+	 * @param parkingFloor
+	 * @param color
+	 * @param requirment
+	 */
 	public void findSlotsRegNumByColor(Map<Integer, Car> parkingFloor,
 			String color, String requirment) {
 		Set<String> requiredSet = new HashSet<String>();
@@ -123,6 +138,12 @@ public class ParkingUtility {
 			System.out.println(requiredSet);
 	}
 
+	/**
+	 * This method finds car slot number by given registration number.
+	 * 
+	 * @param parkingFloor
+	 * @param carToSearch
+	 */
 	public void findSlotByRegistrationNum(Map<Integer, Car> parkingFloor,
 			Car carToSearch) {
 		boolean carPresent = parkingFloor.containsValue(carToSearch);

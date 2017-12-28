@@ -13,8 +13,10 @@ import com.example.core.Car;
 import com.example.util.ParkingUtility;
 
 /**
+ * <h1>Hello, ParkingLotApplication!</h1>
+ * This is main class for Parking lot Application
  * 
- * @author go-jek This is main file for Parking lot Application
+ * @author go-jek 
  */
 public class ParkingLotApplication {
 	

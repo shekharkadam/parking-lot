@@ -1,8 +1,10 @@
 package com.example.constant;
 
 /**
+ * This is Utility constant class where I have added constants for command,
+ * console messages, file path etc.
  * 
- * @author go-jek This is Utility constant file
+ * @author go-jek
  * 
  */
 public class UtilityConstant {
@@ -22,6 +24,7 @@ public class UtilityConstant {
 	public static final String PLEASE_INITIALIZE_PARKING_LOT_MSG = "Please initialize parking lot";
 	public static final String ALLOCATED_SLOT_NUM_MSG = "Allocated slot number:  %s \n";
 	public static final String FREE_SLOT_NUM_MSG = "Slot number %s is free \n";
+	public static final String BEYOND_LOT_SIZE_MSG = "Sorry, %s is beyond lot size of %s \n";
 	public static final String CREATED_PARKING_SLOT_MSG = "Created a parking lot with %s slots \n";
 	public static final String NOT_FOUND_MSG = "Not found";
 	public static final String STATUS_HEADING = "Slot No.	Registration No.	Colour \n";
