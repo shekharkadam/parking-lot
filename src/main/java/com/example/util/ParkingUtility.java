@@ -59,7 +59,10 @@ public class ParkingUtility {
 	public void status(Map<Integer, Car> parkingFloor) {
 		
 		Set<Integer> keySet = parkingFloor.keySet();
-		System.out.println(UtilityConstant.STATUS_HEADING);
+		if(keySet.size()==0)
+			System.out.println(UtilityConstant.PLEASE_INITIALIZE_PARKING_LOT_MSG);
+		else
+			System.out.println(UtilityConstant.STATUS_HEADING);
 		
 		for (int slot : keySet)
 			System.out.println(UtilityConstant.PARK_COMMAND + "		"
