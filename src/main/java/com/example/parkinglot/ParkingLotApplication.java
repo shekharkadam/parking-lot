@@ -27,18 +27,17 @@ public class ParkingLotApplication {
 		// 1.1 Initialize parking floor variable
 		Map<Integer, Car> parkingFloor = new Hashtable<Integer, Car>();
 		
-		//1.2 Initialise ParkingUtility
+		//1.2 Initialize ParkingUtility
 		ParkingUtility parkingUtility = new ParkingUtility();
 
 		// 2.0 read file name string
 		String fileName = "";
 		for(String flName:args){
-			fileName = UtilityConstant.INPUT_FILE_PATH+flName;
+			fileName = flName;
 		}
 		
 		// 3 create Buffered Reader
-		BufferedReader br = parkAppl.createReadBuffer(fileName);
-		
+		BufferedReader br = parkAppl.createReadBuffer(fileName);		
 
 		// 4. Initialize command variable
 		String commandLine = "";
@@ -49,12 +48,13 @@ public class ParkingLotApplication {
 		// 5. User input reading logic
 		 try {
 			while ( (commandLine = br.readLine() )!=null ) {
-				
+				if(commandLine.equalsIgnoreCase(UtilityConstant.PROGRAM_EXIT))
+					break;
 				// 4.1 process the command
-				parkAppl.processCommand(commandLine, parkingFloor, parkingUtility);
-				
+				parkAppl.processCommand(commandLine, parkingFloor, parkingUtility);				
 				if(fileName.length()==0)
 					System.out.print(UtilityConstant.ASK_FOR_INPUT_MSG);
+				
 			}
 			
 			// 6. close buffered reader 
@@ -79,9 +79,8 @@ public class ParkingLotApplication {
 
 		if (commandArray.length >= 1)
 			command = commandArray[0];
-		if (commandArray.length >= 2) {
+		if (commandArray.length >= 2) 
 			arg1 = commandArray[1];
-		}
 		if (commandArray.length >= 3)
 			arg2 = commandArray[2];
 
@@ -105,14 +104,13 @@ public class ParkingLotApplication {
 	
 	public BufferedReader createReadBuffer(String fileName) {
 		
-		BufferedReader br = null;		
 		// 2.0.1 read text file
 		FileReader fileReader = null;
 		
 		if (fileName.length() > 0) {
-
 			try {
-				fileReader = new FileReader(fileName);
+				ClassLoader classLoader = getClass().getClassLoader();
+				fileReader = new FileReader(classLoader.getResource(fileName).getFile());
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
